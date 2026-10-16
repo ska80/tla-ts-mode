@@ -14,10 +14,12 @@
 
 ;;; Code:
 
+(require 'treesit)
+
 ;; Syntax highlighting
 (defconst tla-mode-hl-patterns
   [
-                                        ; Proofs
+   ;; Proofs
    (proof_step_id "<" @punctuation.bracket)
    (proof_step_id (level) @number)
    (proof_step_id (name) @constant)
@@ -30,147 +32,137 @@
 
 (defvar tla-ts-mode-indentation-offset 2)
 (defvar tla-ts-mode--misc-punctuation
-  '(
-    ","
+  '(","
     ":"
     "."
     "!"
     (bullet_conj)
-    (bullet_disj)
-    )
+    (bullet_disj))
   "Punctuation")
 
 (defvar tla-ts-mode--comment
-  '((comment) (block_comment) (block_comment_text) (extramodular_text))
-  )
+  '((comment) (block_comment) (block_comment_text) (extramodular_text)))
 
 (defvar tla-ts-mode--builtin
-  '((nat_number_set) (boolean_set) (int_number_set) (real_number_set) (string_set))
-  )
+  '((nat_number_set) (boolean_set) (int_number_set) (real_number_set) (string_set)))
 
 (defvar tla-ts-mode--constant
-  '("TRUE" "FALSE")
-  )
-
+  '("TRUE" "FALSE"))
 
 (defvar tla-ts-mode--numbers
-  '((nat_number) (real_number) (octal_number) (hex_number) (binary_number))
-  )
+  '((nat_number) (real_number) (octal_number) (hex_number) (binary_number)))
 
 (defvar tla-ts-mode--delimiters
-  '((langle_bracket) (rangle_bracket) (rangle_bracket_sub) "{" "}" "[" "]" "]_" "(" ")")
-  )
+  '((langle_bracket) (rangle_bracket) (rangle_bracket_sub) "{" "}" "[" "]" "]_" "(" ")"))
 
 (defvar tla-ts-mode--operators
-  '( (amp)
-     (ampamp)
-     (approx)
-     (assign)
-     (asymp)
-     (bigcirc)
-     (bnf_rule)
-     (bullet)
-     (cap)
-     (cdot)
-     (circ)
-     (compose)
-     (cong)
-     (cup)
-     (div)
-     (dol)
-     (doldol)
-     (doteq)
-     (dots_2)
-     (dots_3)
-     (eq)
-     (equiv)
-     (excl)
-     (geq)
-     (gg)
-     (gt)
-     (hashhash)
-     (iff)
-     (implies)
-     (in)
-     (land)
-     (ld_ttile)
-     (leads_to)
-     (leq)
-     (ll)
-     (lor)
-     (ls_ttile)
-     (lt)
-     (map_from)
-     (map_to)
-     (minus)
-     (minusminus)
-     (mod)
-     (modmod)
-     (mul)
-     (mulmul)
-     (neq)
-     (notin)
-     (odot)
-     (ominus)
-     (oplus)
-     (oslash)
-     (otimes)
-     (plus)
-     (plus_arrow)
-     (plusplus)
-     (pow)
-     (powpow)
-     (prec)
-     (preceq)
-     (propto)
-     (qq)
-     (rd_ttile)
-     (rs_ttile)
-     (setminus)
-     (sim)
-     (simeq)
-     (slash)
-     (slashslash)
-     (sqcap)
-     (sqcup)
-     (sqsubset)
-     (sqsubseteq)
-     (sqsupset)
-     (sqsupseteq)
-     (star)
-     (subset)
-     (subseteq)
-     (succ)
-     (succeq)
-     (supset)
-     (supseteq)
-     (times)
-     (uplus)
-     (vert)
-     (vertvert)
-     (wr)
-     ;; bound_postfix_op symbols
-     (asterisk)
-     (prime)
-     (sup_hash)
-     (sup_plus)
-     ;; bound_prefix_op
-     (always)
-     (domain)
-     (enabled)
-     (eventually)
-     (lnot)
-     (negative)
-     (powerset)
-     (unchanged)
-     (union)
-     )
-  "Operators that are matched by the mode"
-  )
+  '((amp)
+    (ampamp)
+    (approx)
+    (assign)
+    (asymp)
+    (bigcirc)
+    (bnf_rule)
+    (bullet)
+    (cap)
+    (cdot)
+    (circ)
+    (compose)
+    (cong)
+    (cup)
+    (div)
+    (dol)
+    (doldol)
+    (doteq)
+    (dots_2)
+    (dots_3)
+    (eq)
+    (equiv)
+    (excl)
+    (geq)
+    (gg)
+    (gt)
+    (hashhash)
+    (iff)
+    (implies)
+    (in)
+    (land)
+    (ld_ttile)
+    (leads_to)
+    (leq)
+    (ll)
+    (lor)
+    (ls_ttile)
+    (lt)
+    (map_from)
+    (map_to)
+    (minus)
+    (minusminus)
+    (mod)
+    (modmod)
+    (mul)
+    (mulmul)
+    (neq)
+    (notin)
+    (odot)
+    (ominus)
+    (oplus)
+    (oslash)
+    (otimes)
+    (plus)
+    (plus_arrow)
+    (plusplus)
+    (pow)
+    (powpow)
+    (prec)
+    (preceq)
+    (propto)
+    (qq)
+    (rd_ttile)
+    (rs_ttile)
+    (setminus)
+    (sim)
+    (simeq)
+    (slash)
+    (slashslash)
+    (sqcap)
+    (sqcup)
+    (sqsubset)
+    (sqsubseteq)
+    (sqsupset)
+    (sqsupseteq)
+    (star)
+    (subset)
+    (subseteq)
+    (succ)
+    (succeq)
+    (supset)
+    (supseteq)
+    (times)
+    (uplus)
+    (vert)
+    (vertvert)
+    (wr)
+    ;; bound_postfix_op symbols
+    (asterisk)
+    (prime)
+    (sup_hash)
+    (sup_plus)
+    ;; bound_prefix_op
+    (always)
+    (domain)
+    (enabled)
+    (eventually)
+    (lnot)
+    (negative)
+    (powerset)
+    (unchanged)
+    (union)
+    )
+  "Operators that are matched by the mode")
 
 (defvar tla-ts-mode--pcal-keywords
-  '(
-    "--algorithm"
+  '("--algorithm"
     "assert"
     "await"
     ;; (pcal_definitions)
@@ -190,15 +182,13 @@
     ;; (pcal_print)
     ;; (pcal_procedure)
     ;; (pcal_process)
-    "return"
-    "skip"
+    (pcal_return)
+    (pcal_skip)
     "while"
-    "with"
-    )
-  )
+    "with"))
+
 (defvar tla-ts-mode--keywords
-  '(
-    "ACTION"
+  '("ACTION"
     "ASSUME"
     "ASSUMPTION"
     "AXIOM"
@@ -211,9 +201,7 @@
     "DEF"
     "DEFINE"
     "DEFS"
-    "DOMAIN"
     "ELSE"
-    "ENABLED"
     "EXCEPT"
     "EXTENDS"
     "HAVE"
@@ -239,14 +227,11 @@
     "RECURSIVE"
     "SF_"
     "STATE"
-    "SUBSET"
     "SUFFICES"
     "TAKE"
     "TEMPORAL"
     "THEN"
     "THEOREM"
-    "UNCHANGED"
-    "UNION"
     "USE"
     "VARIABLE"
     "VARIABLES"
@@ -269,103 +254,82 @@
   "TLA+ keywords for tree-sitter font-locking.")
 
 (defvar tla-ts-font-lock-rules
-  `(
-    :language tlaplus
-    :override t
-    :feature builtin
-    (
-     ([,@tla-ts-mode--builtin] @font-lock-builtin-face)
-     ([,@tla-ts-mode--constant] @font-lock-constant-face)
-     (pcal_algorithm_body label: (identifier) @font-lock-constant-face)
-     )
+  `(:language tlaplus
+              :override t
+              :feature builtin
+              (([,@tla-ts-mode--builtin] @font-lock-builtin-face)
+               ([,@tla-ts-mode--constant] @font-lock-constant-face)
+               (pcal_algorithm_body label: (identifier) @font-lock-constant-face))
 
-    :language tlaplus
-    :feature string
-    ((string) @font-lock-string-face)
+              :language tlaplus
+              :feature string
+              ((string) @font-lock-string-face)
 
-    :language tlaplus
-    :feature numbers
-    (
-     [,@tla-ts-mode--numbers] @font-lock-number-face
-     )
+              :language tlaplus
+              :feature numbers
+              ([,@tla-ts-mode--numbers] @font-lock-number-face)
 
-    :language tlaplus
-    :override t
-    :feature keyword
-    (
-     ([,@tla-ts-mode--keywords] @font-lock-keyword-face)
-     ([,@tla-ts-mode--pcal-keywords] @font-lock-keyword-face)
-     )
+              :language tlaplus
+              :override t
+              :feature keyword
+              (([,@tla-ts-mode--keywords] @font-lock-keyword-face)
+               ([,@tla-ts-mode--pcal-keywords] @font-lock-keyword-face))
 
+              :language tlaplus
+              :override t
+              :feature function
+              ((operator_definition name: (identifier) @font-lock-function-name-face))
 
-    :language tlaplus
-    :override t
-    :feature function
-    (
-     (operator_definition name: (identifier) @font-lock-function-name-face)
-     )
+              :language tlaplus
+              :override t
+              :feature operator
+              ([,@tla-ts-mode--operators] @font-lock-operator-face)
 
-    :language tlaplus
-    :override t
-    :feature operator
-    ([,@tla-ts-mode--operators] @font-lock-operator-face)
+              :language tlaplus
+              :override t
+              :feature module
+              ((module name: (identifier) @font-lock-type-face))
 
-    :language tlaplus
-    :override t
-    :feature module
-    (
-     (module name: (identifier) @font-lock-type-face)
-     )
+              :language tlaplus
+              :override t
+              :feature extend
+              (((extends (identifier_ref) @font-lock-preprocessor-face)))
 
-    :language tlaplus
-    :override t
-    :feature extend
-    (
-     ((extends (identifier_ref) @font-lock-preprocessor-face))
-     )
+              :language tlaplus
+              :override t
+              :feature module_constants
+              (((constant_declaration (identifier) @font-lock-variable-name-face)))
 
-    :language tlaplus
-    :override t
-    :feature module_constants
-    (
-     ((constant_declaration (identifier) @font-lock-variable-name-face))
-     )
+              ;; feature extend and parameter overlap as they both match identifier_ref
+              ;;  keep policy instructs to keep previous font lock that was applied by the extend feature
+              :language tlaplus
+              :override keep
+              :feature identifier
+              ((operator_definition parameter: (identifier) @font-lock-variable-name-face)
+               (theorem name: (identifier) @font-lock-variable-name-face)
+               (variable_declaration (identifier) @font-lock-variable-name-face)
+               (pcal_var_decl (identifier) @font-lock-variable-name-face)
+               (pcal_algorithm name: (identifier) @font-lock-function-name-face)
+               (record_literal  (identifier) @font-lock-property-name-face)
+               ((identifier_ref) @font-lock-variable-use-face)
+               ((prev_func_val) @font-lock-variable-use-face)
+               (pcal_process name: (identifier) @font-lock-variable-name-face)
+               (quantifier_bound (identifier) @font-lock-variable-name-face)
+               (pcal_with (identifier) @font-lock-variable-name-face))
 
-    ;; feature extend and parameter overlap as they both match identifier_ref
-    ;;  keep policy instructs to keep previous font lock that was applied by the extend feature
-    :language tlaplus
-    :override keep
-    :feature identifier
-    (
-     (operator_definition parameter: (identifier) @font-lock-variable-name-face)
-     (theorem name: (identifier) @font-lock-variable-name-face)
-     (variable_declaration (identifier) @font-lock-variable-name-face)
-     (pcal_var_decl (identifier) @font-lock-variable-name-face)
-     (pcal_algorithm name: (identifier) @font-lock-function-name-face)
-     (record_literal  (identifier) @font-lock-property-name-face)
-     ((identifier_ref) @font-lock-variable-use-face)
-     ((prev_func_val) @font-lock-variable-use-face)
-     (pcal_process name: (identifier) @font-lock-variable-name-face)
-     (quantifier_bound (identifier) @font-lock-variable-name-face)
-     (pcal_with (identifier) @font-lock-variable-name-face)
-     )
+              :language tlaplus
+              :override t
+              :feature delimiter
+              ([,@tla-ts-mode--delimiters ] @font-lock-bracket-face)
 
-    :language tlaplus
-    :override t
-    :feature delimiter
-    ([,@tla-ts-mode--delimiters ] @font-lock-bracket-face)
+              :language tlaplus
+              :feature misc-punctuation
+              ([,@tla-ts-mode--misc-punctuation] @font-lock-misc-punctuation-face)
 
-    :language tlaplus
-    :feature misc-punctuation
-    ([,@tla-ts-mode--misc-punctuation] @font-lock-misc-punctuation-face)
-
-    :language tlaplus
-    :override keep
-    :feature comment
-    ([,@tla-ts-mode--comment] @font-lock-comment-face)
-
-    )
-  )
+              :language tlaplus
+              :override keep
+              :feature comment
+              ([,@tla-ts-mode--comment] @font-lock-comment-face)))
 
 ;; Imenu support
 ;; For extends and constants, the code
@@ -377,18 +341,14 @@
   `(lambda (node)
      (and (equal (treesit-node-type node) ,node-type)
           (equal (treesit-node-type (treesit-node-parent node))
-                 ,parent-type)
-          ))
-  )
+                 ,parent-type))))
 
 (defun tla-ts-mode--imenu-operator-node-p (node)
-  (equal (treesit-node-type node) "operator_definition")
-  )
+  (equal (treesit-node-type node) "operator_definition"))
 
 (defun tla-ts-mode--imenu-name-operator-function (node)
   ;; retrieve the identifier from name: fiield of the operator_definition node
-  (treesit-node-text (treesit-node-child-by-field-name node "name"))
-  )
+  (treesit-node-text (treesit-node-child-by-field-name node "name")))
 
 (defun tla-ts-setup ()
   "setup treesit for tla-ts-mode."
@@ -409,13 +369,10 @@
   ;; operators, brackets, punctuation, all functions, properties,
   ;; variables, etc.
   (setq-local treesit-font-lock-feature-list
-              '(
-                (comment module)
+              '((comment module)
                 (keyword string function extend module_constants)
                 (numbers constant operator identifier builtin)
-                (delimiter misc-punctuation)
-                )
-              )
+                (delimiter misc-punctuation)))
 
   (setq-local treesit-simple-indent-rules
               '((tlaplus
@@ -427,18 +384,14 @@
                  ;; Pcal construct
                  ((parent-is "pcal_while") parent tla-ts-mode-indentation-offset)
                  (no-node parent 0)
-                 (catch-all parent 0)
-                 ))
-              )
+                 (catch-all parent 0))))
 
   (setq-local treesit--indent-verbose 1)
   (setq-local treesit-simple-imenu-settings
-              `(
-                ("Extends" ,(tla-ts-mode--imenu-node-under-p "extends" "identifier_ref") nil treesit-node-text)
+              `(("Extends" ,(tla-ts-mode--imenu-node-under-p "extends" "identifier_ref") nil treesit-node-text)
                 ("Constants" ,(tla-ts-mode--imenu-node-under-p "constant_declaration" "identifier") nil treesit-node-text)
                 ("Variables" ,(tla-ts-mode--imenu-node-under-p "variable_declaration" "identifier") nil treesit-node-text)
-                ("Operators" tla-ts-mode--imenu-operator-node-p nil tla-ts-mode--imenu-name-operator-function)
-                ))
+                ("Operators" tla-ts-mode--imenu-operator-node-p nil tla-ts-mode--imenu-name-operator-function)))
 
   (treesit-major-mode-setup))
 
@@ -449,8 +402,7 @@
   (setq-local font-lock-defaults nil)
   (when (treesit-ready-p 'tlaplus)
     (treesit-parser-create 'tlaplus)
-    (tla-ts-setup)
-    ))
+    (tla-ts-setup)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist
@@ -458,20 +410,4 @@
 
 (provide 'tla-ts-mode)
 
-;;; tla-mode.el ends here
-(setq q
-      '((bounded_quantification
-         expression: (_) @e)))
-(setq qstr "(bounded_quantification expression: (_) @e)")
-(treesit-query-validate 'tlaplus qstr)
-;; (defun test-capture()
-;;     (interactive)
-;;     (mapcar
-;;      (lambda (result)
-;;        (let ((name (car result))
-;;              (node (cdr result))
-;;              )
-;;          (message "For %s got %s" name  (treesit-node-text node))
-;;          ))
-;;      (treesit-query-capture (treesit-buffer-root-node)
-;;                            q)))
+;;; tla-ts-mode.el ends here
