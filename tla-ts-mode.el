@@ -1,4 +1,4 @@
-;;; tla-ts-mode.el --- Major mode for editing TLA+ files.
+;;; tla-ts-mode.el --- Major mode for editing TLA+ files. -*- lexical-binding: t -*-
 
 ;; Copyright (c) 2023 Davidbrcz
 ;;
